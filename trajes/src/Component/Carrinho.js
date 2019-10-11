@@ -1,4 +1,47 @@
 import React from 'react';
+import styled from 'styled-components';
+import iconeLixeira from '../Img/iconeLixeira.png';
+
+const MeuCarrinho = styled.div`
+    background-color: bisque;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px orange solid;
+    border-radius: 10px;
+    margin-left: 10px;
+`
+
+const QtidadeDeProduto = styled.p`
+    margin: 0;
+`
+
+const SmallContainer = styled.div`
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    &:hover{
+        font-weight: bold;
+    }
+`
+
+const IconeLixeira = styled.img`
+    width: 15px;
+`
+
+const BotaoExcluir = styled.button`
+    background-color: white;
+    border: 1px dashed orange;
+    padding: 5px;
+    margin-left: 15px;
+`
+
+const TotalPagar = styled.p`
+    margin: 10px 0;
+    font-size: 16pt;
+`
 
 
 class Carrinho extends React.Component {
@@ -17,15 +60,21 @@ class Carrinho extends React.Component {
 
 
     render(){
-        const list = this.props.produtos.map((produto)=>{return <div><div><p>{produto.quantidade}X {produto.name}</p> <button onClick={()=>{this.props.removeItem(produto.name)}}>X</button></div><hr/></div>})
+        const list = this.props.produtos.map((produto)=>{return <SmallContainer>
+                                                                    <QtidadeDeProduto>{produto.quantidade} x {produto.name}</QtidadeDeProduto>
+                                                                    <BotaoExcluir onClick={()=>{this.props.removeItem(produto.name)}}>
+                                                                        <IconeLixeira src={iconeLixeira} alt=""/>
+                                                                    </BotaoExcluir>
+                                                                </SmallContainer>
+                                                        })
         const soma = this.soma()
     
         return (
-            <div>
+            <MeuCarrinho>
                 <h3>Carrinho</h3>
                 {list} 
-                <p>Total : {soma}</p>
-            </div>
+                <TotalPagar>Total: R$ {soma}</TotalPagar>
+            </MeuCarrinho>
     );
     }
 }
