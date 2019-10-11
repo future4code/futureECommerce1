@@ -20,50 +20,50 @@ const ComCarrinho = styled.div`
 `
 const produtos =[
   {
-    name: "Traje1",
-    value: 10001.0,
+    name: "Traje12",
+    value: 200.0,
     imageUrl: traje1,
     Carrinho: 0
   },
   {
-    name: "Traje2",
-    value: 10002.0,
+    name: "Traje22",
+    value: 300.0,
     imageUrl: traje2,
     Carrinho: 0
   },
   {
     name: "Traje3",
-    value: 10003.0,
+    value: 500.0,
     imageUrl: traje3,
     Carrinho: 0
   },
   {
     name: "Traje4",
-    value: 40000.0,
+    value: 700.0,
     imageUrl: traje4,
     Carrinho: 0
   },
   {
     name: "Traje5",
-    value: 10050.0,
+    value: 300.0,
     imageUrl: traje5,
     Carrinho: 0
   },
   {
     name: "Traje6",
-    value: 10600.0,
+    value: 600.0,
     imageUrl: traje6,
     Carrinho: 0
   },
   {
     name: "Traje7",
-    value: 10700.0,
+    value: 800.0,
     imageUrl: traje7,
     Carrinho: 0
   },
   {
     name: "Traje8",
-    value: 100000.0,
+    value: 400.0,
     imageUrl: traje8,
     Carrinho: 0
   }
@@ -81,39 +81,38 @@ class App extends React.Component {
   }
 
   atualizaFiltro = (Max , Min , Name) => {
-    this.setState({produtosFiltrados : produtos})
-    if(Max !== ''){
-      const filtroMax = produtos.filter((produto)=>{ 
-                                                    if(produto.value <= Max)  
-                                                      return true
-                                                    }
-                                        )
-                                                    this.setState({produtosFiltrados : filtroMax})
-    }
-    if(Min !== ''){
-      const filtroMin = produtos.filter((produto)=>{ 
-                                                    if(produto.value >= Min ) 
-                                                      return true
-                                                  }
-                                        )
-                                                    this.setState({produtosFiltrados : filtroMin})
-                                            
-    }
-    if(Name !== ''){
-      const filtroName = produtos.filter((produto)=>{ if(produto.name.search(Name) !== -1)
-                                                        return true
-                                                    }
-                                        )
-                                                    this.setState({produtosFiltrados : filtroName})
-                                          
-    }
+    // this.setState({produtosFiltrados : produtos})
+  
+      const produtosFiltrados = produtos.filter(produto => produto.value <= Max)
+                                        .filter(produto => produto.value >= Min)
+                                        .filter(produto => produto.name.search(Name) !== -1)
+        this.setState({produtosFiltrados})
+ 
   }
-
-  adicionarAoCarrinho = (name ,quantidade) =>{
-    const newProduto = this.state.produtosFiltrados.find((elemento) => {return (elemento.name === name)} )
-    const newProdutoCarrinho =  this.state.produtosCarrinho
-    for(let i=1; i <= quantidade; i++){
-      newProdutoCarrinho.push(newProduto)
+    removeItem = (name)=>{
+    const newProdutosCarrinho = this.state.produtosCarrinho.filter((produto)=> {if(produto.name !== name)
+                                                                                return true})
+    this.setState({produtosCarrinho: newProdutosCarrinho})
+  }
+  adicionarAoCarrinho = (name, quantidade) =>{
+    const newProduto = this.state.produtosFiltrados.find(elemento => elemento.name === name)
+    let ver = false
+    let newProdutoCarrinho
+    this.state.produtosCarrinho.forEach((produto)=>{ if(produto.name === newProduto.name){
+                                                        ver = true}                                                  
+                                                    })
+    if (ver){
+      newProdutoCarrinho = this.state.produtosCarrinho
+      const oldProduto = newProdutoCarrinho.find((elemento) => {return (elemento.name === name)})
+      let soma = quantidade + oldProduto.quantidade
+      const newProdutosCarrinho2 = this.state.produtosCarrinho.filter((produto)=> {if(produto.name !== name)
+                                                                                  return true})
+      newProduto.quantidade = soma
+      newProdutoCarrinho =  [...newProdutosCarrinho2, newProduto]
+    }
+    else{
+      newProduto.quantidade = quantidade
+      newProdutoCarrinho =  [...this.state.produtosCarrinho, newProduto]
     }
     this.setState({produtosCarrinho: newProdutoCarrinho})
   }
@@ -122,13 +121,17 @@ class App extends React.Component {
     const mostra = !this.state.mostraCarrinho
     this.setState({mostraCarrinho : mostra})
   }
+
+
+ 
  
 
   render(){
    const estado = this.state.mostraCarrinho?
-   <SemCarrinho> <Filtro filtrar={this.atualizaFiltro} mostrarCarrinho={this.verCarrinho}/> <Catalogo produtos={this.state.produtosFiltrados}/> </SemCarrinho>
-   :<ComCarrinho>  <Filtro filtrar={this.atualizaFiltro} mostrarCarrinho={this.verCarrinho}/> <Catalogo produtos={this.state.produtosFiltrados}/> <Carrinho produtos={this.state.produtosCarrinho}/> </ComCarrinho>;
-    return (
+   <ComCarrinho>  <Filtro filtrar={this.atualizaFiltro} mostrarCarrinho={this.verCarrinho}/> <Catalogo adicionar={this.adicionarAoCarrinho} produtos={this.state.produtosFiltrados}/> <Carrinho removeItem={this.removeItem} produtos={this.state.produtosCarrinho}/> </ComCarrinho>
+   :<SemCarrinho> <Filtro filtrar={this.atualizaFiltro} mostrarCarrinho={this.verCarrinho}/> <Catalogo adicionar={this.adicionarAoCarrinho} produtos={this.state.produtosFiltrados}/> </SemCarrinho>;
+   
+   return (
       <div>
         {estado}
       </div>

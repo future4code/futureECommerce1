@@ -5,24 +5,24 @@ class Filtro extends React.Component {
     constructor(props){
         super(props)
 
-        this.state = {max: '',
-                      min: '',
-                      nome: ''}
+        this.state = {max: Infinity,
+                      min: 0,
+                      nome: ""}
     }
 
     changeMax = (event) =>{
-        this.setState({ max : event.target.value})
-        this.props.filtrar(this.state.max , this.state.min, this.state.nome)
+        this.setState({max : event.target.value})
+        this.props.filtrar(event.target.value , this.state.min, this.state.nome)
     }
 
     changeMin = (event) =>{
-        this.setState({ min : event.target.value})
-        this.props.filtrar(this.state.max , this.state.min, this.state.nome)
+        this.setState({min : event.target.value})
+        this.props.filtrar(this.state.max , event.target.value, this.state.nome)
     }
 
     changeNome = (event) =>{
         this.setState({ nome : event.target.value})
-        this.props.filtrar(this.state.max , this.state.min, this.state.nome)
+        this.props.filtrar(this.state.max , this.state.min, event.target.value)
     }
     
     render(){
