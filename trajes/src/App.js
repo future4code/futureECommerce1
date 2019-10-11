@@ -15,11 +15,25 @@ import traje8 from './Img/astronauta8.png'
 const SemCarrinho = styled.div`
   display: grid;
   grid-template-columns: 10vw 1fr;
+  margin: 10px;
+  flex-grow: 1;
 `
 const ComCarrinho = styled.div`
   display: grid;
   grid-template-columns: 10vw 1fr 10vw;
+  margin: 10px;
+  flex-grow: 1;
 `
+
+const SuperContainer = styled.div`
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction:column;
+  flex-grow: 1;
+`
+
 const produtos =[
   {
     name: "Traje12",
@@ -79,23 +93,22 @@ class App extends React.Component {
       mostraCarrinho: false,
       produtosFiltrados: produtos,
       produtosCarrinho: [],
-                  }
+    }
   }
 
   atualizaFiltro = (Max , Min , Name) => {
-    // this.setState({produtosFiltrados : produtos})
-  
       const produtosFiltrados = produtos.filter(produto => produto.value <= Max)
                                         .filter(produto => produto.value >= Min)
                                         .filter(produto => produto.name.search(Name) !== -1)
-        this.setState({produtosFiltrados})
- 
+      this.setState({produtosFiltrados})
   }
-    removeItem = (name)=>{
+
+  removeItem = (name)=>{
     const newProdutosCarrinho = this.state.produtosCarrinho.filter((produto)=> {if(produto.name !== name)
                                                                                 return true})
     this.setState({produtosCarrinho: newProdutosCarrinho})
   }
+
   adicionarAoCarrinho = (name, quantidade) =>{
     const newProduto = this.state.produtosFiltrados.find(elemento => elemento.name === name)
     let ver = false
@@ -124,19 +137,15 @@ class App extends React.Component {
     this.setState({mostraCarrinho : mostra})
   }
 
-
- 
- 
-
   render(){
    const estado = this.state.mostraCarrinho?
    <ComCarrinho>  <Filtro filtrar={this.atualizaFiltro} mostrarCarrinho={this.verCarrinho}/> <Catalogo adicionar={this.adicionarAoCarrinho} produtos={this.state.produtosFiltrados}/> <Carrinho removeItem={this.removeItem} produtos={this.state.produtosCarrinho}/> </ComCarrinho>
    :<SemCarrinho> <Filtro filtrar={this.atualizaFiltro} mostrarCarrinho={this.verCarrinho}/> <Catalogo adicionar={this.adicionarAoCarrinho} produtos={this.state.produtosFiltrados}/> </SemCarrinho>;
    
    return (
-      <div>
+      <SuperContainer>
         {estado}
-      </div>
+      </SuperContainer>
     );
   }
 }
