@@ -13,10 +13,12 @@ import traje7 from './Img/astronauta7.png'
 import traje8 from './Img/astronauta8.png'
 
 const SemCarrinho = styled.div`
-
+  display: grid;
+  grid-template-columns: 10vw 1fr;
 `
 const ComCarrinho = styled.div`
-
+  display: grid;
+  grid-template-columns: 10vw 1fr 10vw;
 `
 const produtos =[
   {

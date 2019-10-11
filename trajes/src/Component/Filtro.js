@@ -1,5 +1,13 @@
 import React from 'react';
+import styled from 'styled-components';
 
+const Input = styled.input` 
+    width: 5vw;
+`
+const Div = styled.div` 
+    margin-left: 2vw;
+    margin-top: 2vh
+`
 
 class Filtro extends React.Component {
     constructor(props){
@@ -27,17 +35,18 @@ class Filtro extends React.Component {
     
     render(){
         return (
-            <div>
-            <label>Valor Maximo: </label><br/>
-                <input type='number' value={this.state.max} onChange={this.changeMax}/>
+            <Div>
+                <label>Valor Maximo: </label><br/>
+                <Input type='number' value={this.state.max} onChange={this.changeMax}/>
                 <br/> 
                 <label>Valor Minimo </label><br/>
-                <input type='number' value={this.state.min} onChange={this.changeMin}/>
+                <Input type='number' value={this.state.min} onChange={this.changeMin}/>
                 <br/>
                 <label>Nome </label><br/>
-                <input type='text' value={this.state.nome} onChange={this.changeNome}/>
+                <Input type='text' value={this.state.nome} onChange={this.changeNome}/>
+                <br/><br/>
                 <button onClick={this.props.mostrarCarrinho}>Carrinho</button>
-            </div>
+            </Div>
         );
     }
 }
